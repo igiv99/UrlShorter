@@ -1,0 +1,25 @@
+@UrlShorter_HostAddress = http://localhost:5099
+
+POST {{UrlShorter_HostAddress}}/create
+Content-Type: application/json
+
+{
+  "ShortUrlPattern": "images/",
+  "directUrl": "https://primaryleap.co.uk/images/wikileap/post_levels/thumb_large/32d419f896ca782505b2d256a1ee902db75a5ba7iY.jpg"
+}
+
+> {%
+    client.global.set("shortUrl", response.body);
+%}
+
+###
+
+GET {{UrlShorter_HostAddress}}/redirect/{{shortUrl}}
+Accept: application/json
+
+###
+
+GET {{UrlShorter_HostAddress}}/redirect/take%20your%20data
+Accept: application/json
+
+###
