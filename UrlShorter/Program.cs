@@ -17,12 +17,12 @@ app.UseHttpsRedirection();
 
 app.MapPost("/create", (NewShortUrlDto dto, [FromServices] IShortUrlStorage storage) =>
 {
-    if (!storage.TrySaveUrl(dto, out var shortUrl))
+    if (storage.TrySaveUrl(dto, out var shortUrl))
     {
-        return Results.BadRequest();
+        return Results.Ok(shortUrl);
     }
     
-    return Results.Ok(shortUrl);
+    return Results.BadRequest();
 });
 
 app.MapGet("/redirect/{*shortUrl}", (string shortUrl, [FromServices] IShortUrlStorage storage) =>
