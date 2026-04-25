@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Mvc;
 using UrlShorter.Data;
 using UrlShorter.Data.Dto;
 using UrlShorter.Filters.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<IShortUrlStorage, LocalShortUrlStorage>();
 
 // Add services to the container.
 
@@ -12,9 +15,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-var storage = new ShortUrlStorage();
-
-app.MapPost("/create", (NewShortUrlDto dto) =>
+app.MapPost("/create", (NewShortUrlDto dto, [FromServices] IShortUrlStorage storage) =>
 {
     if (!storage.TrySaveUrl(dto, out var shortUrl))
     {
@@ -24,7 +25,7 @@ app.MapPost("/create", (NewShortUrlDto dto) =>
     return Results.Ok(shortUrl);
 });
 
-app.MapGet("/redirect/{*shortUrl}", (string shortUrl) =>
+app.MapGet("/redirect/{*shortUrl}", (string shortUrl, [FromServices] IShortUrlStorage storage) =>
 {
     if (storage.TryGetDirectUrl(shortUrl, out var directUrl))
     {
