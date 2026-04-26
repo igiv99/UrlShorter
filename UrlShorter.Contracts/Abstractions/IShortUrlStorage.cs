@@ -26,5 +26,5 @@ public interface IShortUrlStorage
     /// <param name="id">ID короткой ссылки в системе</param>
     /// <param name="shortUrlInfo">Сведения о короткой ссылке <see cref="ShortUrlDto"/></param>
     /// <returns>True - если сущность найдена, false - если не удалось найти</returns>
-    public bool TryGetShotUrlInfo(Guid id, out ShortUrlDto? shortUrlInfo);
+    public bool TryGetShortUrlInfo(Guid id, out ShortUrlDto? shortUrlInfo);
 }

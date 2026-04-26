@@ -67,7 +67,7 @@ public class DbShortUrlStorage : IShortUrlStorage
     }
 
     /// <inheritdoc/>
-    public bool TryGetShotUrlInfo(Guid id, out ShortUrlDto? shortUrlInfo)
+    public bool TryGetShortUrlInfo(Guid id, out ShortUrlDto? shortUrlInfo)
     {
         var entity = _context.Find<ShortUrl>(id);
         if (entity == null)

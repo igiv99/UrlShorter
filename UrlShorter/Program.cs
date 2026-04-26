@@ -32,7 +32,7 @@ app.MapPost("/create", (CreateShortUrlRequest request, [FromServices] IShortUrlS
 
 app.MapGet("/find", ([FromQuery] Guid id, [FromServices] IShortUrlStorage storage) =>
 {
-    if (storage.TryGetShotUrlInfo(id, out var shortUrlInfo))
+    if (storage.TryGetShortUrlInfo(id, out var shortUrlInfo))
     {
         return Results.Ok(shortUrlInfo);
     }
