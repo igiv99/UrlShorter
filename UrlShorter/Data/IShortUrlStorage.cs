@@ -15,8 +15,16 @@ public interface IShortUrlStorage
     /// <summary>
     /// Сохраняет оригинальную ссылку
     /// </summary>
-    /// <param name="urlDto"><see cref="NewShortUrlDto"/></param>
-    /// <param name="shortUrl">Связанная короткая ссылка</param>
+    /// <param name="urlRequest">Запрос на создание короткой ссылки <see cref="CreateShortUrlRequest"/></param>
+    /// <param name="shortUrl">Результат операции <see cref="CreateShortUrlResponse"/></param>
     /// <returns>True - если ссылка сохранена, false - ошибка при сохранении ссылки</returns>
-    public bool TrySaveUrl(NewShortUrlDto urlDto, out string shortUrl);
+    public bool TrySaveUrl(CreateShortUrlRequest urlRequest, out CreateShortUrlResponse? shortUrl);
+
+    /// <summary>
+    /// Получает сведения о короткой ссылке
+    /// </summary>
+    /// <param name="id">ID короткой ссылки в системе</param>
+    /// <param name="shortUrlInfo">Сведения о короткой ссылке <see cref="ShortUrlDto"/></param>
+    /// <returns>True - если сущность найдена, false - если не удалось найти</returns>
+    public bool TryGetShotUrlInfo(Guid id, out ShortUrlDto? shortUrlInfo);
 }

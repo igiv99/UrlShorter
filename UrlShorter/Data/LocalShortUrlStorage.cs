@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using UrlShorter.Data.Dto;
+using UrlShorter.Data.Entities;
 using UrlShorter.Services;
 
 namespace UrlShorter.Data;
@@ -9,26 +10,55 @@ namespace UrlShorter.Data;
 /// </summary>
 public class LocalShortUrlStorage : IShortUrlStorage
 {
-    private readonly ConcurrentDictionary<string, string> _storage = new();
+    private readonly ConcurrentDictionary<string, ShortUrl> _storage = new();
 
     /// <inheritdoc/>
     public bool TryGetDirectUrl(string shortUrl, out string directUrl)
     {
-        //гарантируем, что ссылка не будет null
-        directUrl = string.Empty;
-        
-        if (!_storage.TryGetValue(shortUrl, out directUrl!))
+        if (_storage.TryGetValue(shortUrl, out var entity))
         {
-            return false;
+            directUrl = entity.DirectUrlValue;
+            return !string.IsNullOrEmpty(directUrl);   
         }
         
-        return !string.IsNullOrEmpty(directUrl);
+        directUrl = string.Empty;
+        return false;
     }
 
     /// <inheritdoc/>
-    public bool TrySaveUrl(NewShortUrlDto urlDto, out string shortUrl)
+    public bool TrySaveUrl(CreateShortUrlRequest urlRequest, out CreateShortUrlResponse? shortUrl)
     {
-        shortUrl = ShortUrlGenerator.Generate(urlDto.ShortUrlPattern);
-        return _storage.TryAdd(shortUrl, urlDto.DirectUrl);
+        var shortUrlValue = ShortUrlGenerator.Generate(urlRequest.ShortUrlPattern);
+        var newEntity = new ShortUrl
+        {
+            Id = Guid.NewGuid(),
+            ShortUrlValue = shortUrlValue,
+            DirectUrlValue = urlRequest.DirectUrl,
+        };
+        
+        var isSuccess = _storage.TryAdd(shortUrlValue, newEntity);
+
+        if (isSuccess)
+        {
+            shortUrl = new(newEntity.Id, newEntity.ShortUrlValue);
+            return true;
+        }
+        
+        shortUrl = null;
+        return false;
+    }
+
+    /// <inheritdoc/>
+    public bool TryGetShotUrlInfo(Guid id, out ShortUrlDto? shortUrlInfo)
+    {
+        var entity = _storage.Values.FirstOrDefault(x => x.Id == id);
+        if (entity == null)
+        {
+            shortUrlInfo = null;
+            return false;
+        }
+        
+        shortUrlInfo = new ShortUrlDto(entity.ShortUrlValue, entity.DirectUrlValue, entity.ExpiresAt);
+        return true;
     }
 }

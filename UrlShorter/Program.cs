@@ -15,13 +15,23 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.MapPost("/create", (NewShortUrlDto dto, [FromServices] IShortUrlStorage storage) =>
+app.MapPost("/create", (CreateShortUrlRequest request, [FromServices] IShortUrlStorage storage) =>
 {
-    if (storage.TrySaveUrl(dto, out var shortUrl))
+    if (storage.TrySaveUrl(request, out var shortUrl))
     {
         return Results.Ok(shortUrl);
     }
     
+    return Results.BadRequest();
+});
+
+app.MapGet("/find", ([FromQuery] Guid id, [FromServices] IShortUrlStorage storage) =>
+{
+    if (storage.TryGetShotUrlInfo(id, out var shortUrlInfo))
+    {
+        return Results.Ok(shortUrlInfo);
+    }
+
     return Results.BadRequest();
 });
 

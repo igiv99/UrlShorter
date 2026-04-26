@@ -9,8 +9,14 @@ Content-Type: application/json
 }
 
 > {%
-    client.global.set("shortUrl", response.body);
+    client.global.set("id", response.body.id);
+    client.global.set("shortUrl", response.body.shortUrl);
 %}
+
+###
+
+GET {{UrlShorter_HostAddress}}/find?id={{id}}
+Accept: application/json
 
 ###
 
