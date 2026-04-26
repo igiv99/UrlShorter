@@ -5,6 +5,8 @@
     build:
       context: .
       dockerfile: UrlShorter/Dockerfile
+    environment:
+      - ConnectionStrings__DbConnection=Host=db;Database=url_shorter;Username=admin;Password=admin
     ports:
       - "8080:8080"
       
