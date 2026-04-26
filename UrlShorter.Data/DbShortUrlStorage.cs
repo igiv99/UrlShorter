@@ -25,7 +25,7 @@ public class DbShortUrlStorage : IShortUrlStorage
     {
         var entity = _context.ShortUrls.FirstOrDefault(x => x.ShortUrlValue == shortUrl);
 
-        if (entity == null)
+        if (entity == null || entity.ExpiresAt < DateTime.UtcNow)
         {
             _logger.LogWarning($"Tried to get url ({shortUrl}), but entity was not found.");
             
@@ -46,6 +46,7 @@ public class DbShortUrlStorage : IShortUrlStorage
             Id = Guid.NewGuid(),
             ShortUrlValue = shortUrlValue,
             DirectUrlValue = urlRequest.DirectUrl,
+            ExpiresAt = urlRequest.ExpirationInfo?.GetExpirationDate()
         };
 
         try

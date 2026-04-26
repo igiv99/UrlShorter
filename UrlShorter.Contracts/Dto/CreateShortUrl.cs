@@ -1,11 +1,13 @@
-﻿namespace UrlShorter.Contracts.Dto;
+﻿using UrlShorter.Contracts.Models;
+
+namespace UrlShorter.Contracts.Dto;
 
 /// <summary>
 /// Request для создания новой короткой ссылки
 /// </summary>
 /// <param name="DirectUrl">Оригинальная ссылка</param>
 /// <param name="ShortUrlPattern">Пользовательский шаблон для короткой ссылки</param>
-public record CreateShortUrlRequest(string DirectUrl, string ShortUrlPattern);
+public record CreateShortUrlRequest(string DirectUrl, string ShortUrlPattern, ExpirationInfo? ExpirationInfo = null);
 
 /// <summary>
 /// Response создания короткой ссылки

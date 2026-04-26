@@ -8,5 +8,5 @@ namespace UrlShorter.Data;
 /// </summary>
 public class UrlShorterContext(DbContextOptions<UrlShorterContext> options) : DbContext(options)
 {
-    public DbSet<ShortUrl> ShortUrls { get; set; }
+    public virtual DbSet<ShortUrl> ShortUrls { get; set; }
 }
