@@ -20,4 +20,6 @@
       POSTGRES_DB: url_shorter
     volumes:
       - ./dbstorage:/var/lib/postgresql/data/18/main
+    ports:
+      - "5050:5050"
   

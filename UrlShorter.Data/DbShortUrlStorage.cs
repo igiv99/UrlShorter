@@ -1,4 +1,5 @@
-﻿using UrlShorter.Contracts.Abstractions;
+﻿using Microsoft.Extensions.Logging;
+using UrlShorter.Contracts.Abstractions;
 using UrlShorter.Contracts.Dto;
 using UrlShorter.Data.Entities;
 using UrlShorter.Infrastructure;
@@ -11,10 +12,12 @@ namespace UrlShorter.Data;
 public class DbShortUrlStorage : IShortUrlStorage
 {
     private readonly UrlShorterContext _context;
+    private readonly ILogger<DbShortUrlStorage> _logger;
 
-    public DbShortUrlStorage(UrlShorterContext context)
+    public DbShortUrlStorage(UrlShorterContext context, ILogger<DbShortUrlStorage> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     /// <inheritdoc/>
@@ -24,6 +27,8 @@ public class DbShortUrlStorage : IShortUrlStorage
 
         if (entity == null)
         {
+            _logger.LogWarning($"Tried to get url ({shortUrl}), but entity was not found.");
+            
             directUrl = string.Empty;
             return false;
         }
@@ -49,8 +54,10 @@ public class DbShortUrlStorage : IShortUrlStorage
         
             _context.SaveChanges();
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            _logger.LogError($"Error while saving url {urlRequest.DirectUrl}: {e.Message}");
+            
             shortUrl = null;
             return false;
         }
@@ -65,6 +72,8 @@ public class DbShortUrlStorage : IShortUrlStorage
         var entity = _context.Find<ShortUrl>(id);
         if (entity == null)
         {
+            _logger.LogWarning($"Tried to get url (id: {id}), but entity was not found.");
+            
             shortUrlInfo = null;
             return false;
         }

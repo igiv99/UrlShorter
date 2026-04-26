@@ -15,7 +15,7 @@ Content-Type: application/json
 
 ###
 
-GET {{UrlShorter_HostAddress}}/find?id={{id}}
+GET {{UrlShorter_HostAddress}}/find?id=14795aac-6c73-42ac-8890-02bb3eb60298
 Accept: application/json
 
 ###
