@@ -1,4 +1,4 @@
-﻿namespace UrlShorter.Data.Dto;
+﻿namespace UrlShorter.Contracts.Dto;
 
 /// <summary>
 /// Request для создания новой короткой ссылки

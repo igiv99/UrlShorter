@@ -1,12 +1,13 @@
 ﻿using System.Collections.Concurrent;
-using UrlShorter.Data.Dto;
+using UrlShorter.Contracts.Abstractions;
+using UrlShorter.Contracts.Dto;
 using UrlShorter.Data.Entities;
-using UrlShorter.Services;
+using UrlShorter.Infrastructure;
 
 namespace UrlShorter.Data;
 
 /// <summary>
-/// Хранилище коротких ссылок
+/// Локальное хранилище коротких ссылок
 /// </summary>
 public class LocalShortUrlStorage : IShortUrlStorage
 {

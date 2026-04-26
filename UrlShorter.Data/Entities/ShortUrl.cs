@@ -1,8 +1,13 @@
-﻿namespace UrlShorter.Data.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using UrlShorter.Data.Configurations;
+// ReSharper disable EntityFramework.ModelValidation.UnlimitedStringLength
+
+namespace UrlShorter.Data.Entities;
 
 /// <summary>
 /// Сущность короткой ссылки
 /// </summary>
+[EntityTypeConfiguration(typeof(ShortUrlConfiguration))]
 public class ShortUrl : BaseEntity<Guid>
 {
     /// <summary>

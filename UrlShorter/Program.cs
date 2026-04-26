@@ -1,11 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using UrlShorter.Contracts.Abstractions;
+using UrlShorter.Contracts.Dto;
 using UrlShorter.Data;
-using UrlShorter.Data.Dto;
 using UrlShorter.Filters.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<IShortUrlStorage, LocalShortUrlStorage>();
+builder.Services.AddDbContext<UrlShorterContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnection")));
+
+builder.Services.AddScoped<IShortUrlStorage, DbShortUrlStorage>();
 
 // Add services to the container.
 

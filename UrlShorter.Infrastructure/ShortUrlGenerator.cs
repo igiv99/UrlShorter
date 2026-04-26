@@ -1,4 +1,4 @@
-﻿namespace UrlShorter.Services;
+﻿namespace UrlShorter.Infrastructure;
 
 /// <summary>
 /// Генератор коротких ссылок

@@ -1,4 +1,4 @@
-﻿namespace UrlShorter.Data.Dto;
+﻿namespace UrlShorter.Contracts.Dto;
 
 /// <summary>
 /// DTO для чтения короткой ссылки

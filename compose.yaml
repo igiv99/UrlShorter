@@ -1,0 +1,21 @@
+﻿services:
+  urlshorter:
+    image: urlshorter
+    container_name: urlshorter_app
+    build:
+      context: .
+      dockerfile: UrlShorter/Dockerfile
+    ports:
+      - "8080:8080"
+      
+  db:
+    image: postgres:latest
+    container_name: urlshorter_db
+    restart: on-failure
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: url_shorter
+    volumes:
+      - ./dbstorage:/var/lib/postgresql/data/18/main
+  

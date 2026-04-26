@@ -1,6 +1,6 @@
-﻿using UrlShorter.Data.Dto;
+﻿using UrlShorter.Contracts.Dto;
 
-namespace UrlShorter.Data;
+namespace UrlShorter.Contracts.Abstractions;
 
 public interface IShortUrlStorage
 {
