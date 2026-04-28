@@ -1,38 +1,48 @@
 ﻿namespace UrlShorter.Contracts.Models;
 
+/// <summary>
+/// Сведения о сроке истечения действия короткой ссылки
+/// </summary>
 public record ExpirationInfo
 {
-    public TermType ExpirationType { get; init; }
-    public uint? TermUnits { get; init; }
-    public DateTime? CustomDateTime { get; init; }
+    private readonly TermType _expirationType;
+    private readonly uint? _termUnits;
+    private readonly DateTime? _customDateTime;
 
     public ExpirationInfo(TermType expirationType, uint? termUnits, DateTime? customDateTime)
     {
-        ExpirationType = expirationType;
+        _expirationType = expirationType;
         //флоу выбора даты и времени пользователем
-        if (!termUnits.HasValue && ExpirationType == TermType.Custom)
+        if (!termUnits.HasValue && _expirationType == TermType.Custom)
         {
-            CustomDateTime = customDateTime ??
+            _customDateTime = customDateTime ??
                              throw new ArgumentException("Custom user date and time must be specified", nameof(customDateTime));
         }
         //флоу с фиксированными сроками
         if (termUnits.HasValue)
         {
-            TermUnits = termUnits;
+            _termUnits = termUnits;
         }
     }
-    
-    public DateTime GetExpirationDate()
+
+    /// <summary>
+    /// Дата истечения срока действия ссылки
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public DateTime ExpirationDate
     {
-        var dateTimeNow = DateTime.UtcNow;
-        return ExpirationType switch
+        get
         {
-            TermType.Custom => CustomDateTime!.Value,
-            TermType.Hourly => dateTimeNow.AddHours(Convert.ToDouble(TermUnits)),
-            TermType.Daily => dateTimeNow.AddDays(Convert.ToDouble(TermUnits)),
-            TermType.Monthly => dateTimeNow.AddMonths(Convert.ToInt32(TermUnits)),
-            _ => throw new ArgumentOutOfRangeException()
-        };
+            var dateTimeNow = DateTime.UtcNow;
+            return _expirationType switch
+            {
+                TermType.Custom => _customDateTime!.Value,
+                TermType.Hourly => dateTimeNow.AddHours(Convert.ToDouble(_termUnits)),
+                TermType.Daily => dateTimeNow.AddDays(Convert.ToDouble(_termUnits)),
+                TermType.Monthly => dateTimeNow.AddMonths(Convert.ToInt32(_termUnits)),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
     }
 }
 

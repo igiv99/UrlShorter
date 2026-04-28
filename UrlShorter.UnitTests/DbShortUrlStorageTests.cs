@@ -67,7 +67,7 @@ public class DbShortUrlStorageTests
         
         var shortUrl = ShortUrlGenerator.Generate(UserShortUrlPattern);
         
-        var expiresAt = expirationInfo.GetExpirationDate();
+        var expiresAt = expirationInfo.ExpirationDate;
         
         var contextMock = CreateMockDbContext(new List<ShortUrl>()
         {

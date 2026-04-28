@@ -46,7 +46,7 @@ public class DbShortUrlStorage : IShortUrlStorage
             Id = Guid.NewGuid(),
             ShortUrlValue = shortUrlValue,
             DirectUrlValue = urlRequest.DirectUrl,
-            ExpiresAt = urlRequest.ExpirationInfo?.GetExpirationDate()
+            ExpiresAt = urlRequest.ExpirationInfo?.ExpirationDate
         };
 
         try

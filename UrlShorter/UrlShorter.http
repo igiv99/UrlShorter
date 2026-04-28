@@ -4,7 +4,7 @@ POST {{UrlShorter_HostAddress}}/create
 Content-Type: application/json
 
 {
-  "ShortUrlPattern": "images/",
+  "shortUrlPattern": "images/",
   "directUrl": "https://primaryleap.co.uk/images/wikileap/post_levels/thumb_large/32d419f896ca782505b2d256a1ee902db75a5ba7iY.jpg"
 }
 
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 ###
 
-GET {{UrlShorter_HostAddress}}/find?id=14795aac-6c73-42ac-8890-02bb3eb60298
+GET {{UrlShorter_HostAddress}}/find?id={{id}}
 Accept: application/json
 
 ###
